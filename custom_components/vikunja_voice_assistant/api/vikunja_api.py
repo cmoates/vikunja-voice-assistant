@@ -203,16 +203,26 @@ class VikunjaAPI:
             return False
 
     def add_task(self, task_data):
-        """Create a new task (requires title, uses project_id then removes it)."""
+        """Create a new task."""
+        # Extract project_id carefully, defaulting to 1 if not provided
         project_id = task_data.get("project_id", 1)
-        if not task_data.get("title"):
+        
+        # Prepare the payload by copying task_data and removing the project_id key
+        # so it doesn't get sent inside the JSON payload if not needed there
+        payload = task_data.copy()
+        if "project_id" in payload:
+            del payload["project_id"]
+            
+        if not payload.get("title"):
             _LOGGER.error("Cannot create task: missing 'title'")
             return None
+            
         try:
+            # We send 'payload' which now contains title, description, due_date, etc.
             response = requests.put(
                 f"{self.url}/projects/{project_id}/tasks",
                 headers=self.headers,
-                json=task_data,
+                json=payload, 
                 timeout=30,
             )
             response.raise_for_status()
