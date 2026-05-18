@@ -34,7 +34,7 @@ def setup_services(hass: HomeAssistant):
 
     async def create_task(call: ServiceCall):
         """Create a task in Vikunja."""
-        task_data = call.data.copy()
+        task_data = dict(call.data)
 
         result = await hass.async_add_executor_job(
             lambda: vikunja_api.add_task(task_data)
