@@ -13,9 +13,10 @@ CREATE_TASK_SCHEMA = vol.Schema(
     {
         vol.Required("title"): cv.string,
         vol.Optional("description"): cv.string,
-        vol.Optional("project_id"): cv.positive_int,
+        vol.Optional("project_id"): vol.All(vol.Coerce(int), vol.Range(min=1)),
         vol.Optional("due_date"): cv.string,
-    }
+    },
+    extra=vol.ALLOW_EXTRA, # This allows the LLM to pass fields we didn't explicitly define
 )
 
 
