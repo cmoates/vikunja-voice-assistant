@@ -1,20 +1,35 @@
 create_task:
+  name: Create task
   description: Create a new task in Vikunja
   fields:
     title:
+      name: Title
       description: Title of the task
       example: "Buy milk"
       required: true
+      selector:
+        text:
     description:
+      name: Description
       description: Description of the task
       example: "From the grocery store"
       required: false
+      selector:
+        text:
     project_id:
+      name: Project ID
       description: Project ID to add the task to
       example: 1
       required: false
-      default: 1
+      selector:
+        number:
+          min: 1
+          max: 1000
+          mode: box
     due_date:
+      name: Due Date
       description: Due date for the task in ISO format (YYYY-MM-DDTHH:MM:SS)
       example: "2023-12-31T18:00:00"
       required: false
+      selector:
+        datetime:
